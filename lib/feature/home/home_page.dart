@@ -7,6 +7,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final searchController = TextEditingController();
     final isDark = ref.watch(themeControllerProvider);
     return Scaffold(
       appBar: AppBar(
@@ -20,6 +21,50 @@ class HomePage extends ConsumerWidget {
                 : const Icon(Icons.light_mode),
           )
         ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(
+          top: 60,
+          left: 20,
+          right: 20,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Dictionary',
+              style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                    fontSize: 40,
+                  ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              controller: searchController,
+              decoration: const InputDecoration(
+                hintText: "search here",
+                filled: true,
+                fillColor: Color.fromARGB(255, 212, 212, 212),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Text(
+              "Recent",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ],
+        ),
       ),
     );
   }
