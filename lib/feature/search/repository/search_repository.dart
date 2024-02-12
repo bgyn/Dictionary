@@ -8,9 +8,10 @@ final searchRepositoryProvider = Provider((ref) => SearchRepository());
 class SearchRepository {
   SearchRepository();
 
+  static const url = ApiConstant.BASE_URL;
+
   Future<DictionaryModel> getResponse({required String word}) async {
-    String url = '${ApiConstant.BASE_URL}$word';
-    final response = await Dio().get(url);
+    final response = await Dio().get(url + word);
     return DictionaryModel.fromJson(response.data[0]);
   }
 }

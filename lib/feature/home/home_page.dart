@@ -1,4 +1,3 @@
-import 'package:dictionary/feature/search/controller/search_controller.dart';
 import 'package:dictionary/theme/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,16 +63,6 @@ class HomePage extends ConsumerWidget {
               "Recent",
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            Consumer(builder: (context, ref, child) {
-              return ref.watch(getResponseProvider("book")).when(
-                  data: (data) {
-                    return Text(data.word.toString());
-                  },
-                  error: (error, errorStack) {
-                    return Text(error.toString());
-                  },
-                  loading: () => const CircularProgressIndicator());
-            })
           ],
         ),
       ),
