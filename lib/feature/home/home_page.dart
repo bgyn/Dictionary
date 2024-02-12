@@ -1,13 +1,17 @@
+import 'package:dictionary/feature/search/screen/search_page.dart';
 import 'package:dictionary/theme/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends ConsumerWidget {
-  const HomePage({super.key});
+  final searchController = TextEditingController();
+  HomePage({super.key});
+  void clearText() {
+    searchController.clear();
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final searchController = TextEditingController();
     final isDark = ref.watch(themeControllerProvider);
     return Scaffold(
       appBar: AppBar(
@@ -55,6 +59,16 @@ class HomePage extends ConsumerWidget {
                   borderSide: BorderSide.none,
                 ),
               ),
+              onSubmitted: (value) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchPage(
+                        query: value.toString(),
+                      ),
+                    ));
+                clearText();
+              },
             ),
             const SizedBox(
               height: 30,

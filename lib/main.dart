@@ -22,7 +22,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: 'Dictionary',
       theme: getAppTheme(context, ref.watch(themeControllerProvider)),
-      home: const HomePage(),
+      home: HomePage(),
     );
   }
 }
