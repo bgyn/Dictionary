@@ -5,12 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchPage extends ConsumerWidget {
   final String query;
-  const SearchPage({super.key, required this.query});
+  SearchPage({super.key, required this.query});
 
   Future<void> playAudioFromUrl(String url) async {
     final player = AudioPlayer();
     await player.play(UrlSource(url));
   }
+
+  final indexProvider = StateProvider<int>((ref) => 0);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,6 +46,7 @@ class SearchPage extends ConsumerWidget {
                       data.word.toString(),
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontSize: 40,
+                            fontWeight: FontWeight.bold,
                           ),
                     ),
                     Row(
@@ -67,6 +70,205 @@ class SearchPage extends ConsumerWidget {
                             color: Colors.blue,
                           ),
                         )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final currentIndex = ref.watch(indexProvider);
+                        return Row(
+                          children: data.meanings!.asMap().entries.map((entry) {
+                            int index = entry.key;
+                            var meaning = entry.value;
+                            return InkWell(
+                              onTap: () {
+                                ref
+                                    .watch(indexProvider.notifier)
+                                    .update((state) => index);
+                              },
+                              child: Container(
+                                width: 80,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  color: currentIndex == index
+                                      ? Colors.blue
+                                      : null,
+                                  border:
+                                      Border.all(width: 1, color: Colors.blue),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    meaning.partOfSpeech.toString(),
+                                    style: currentIndex == index
+                                        ? Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(color: Colors.white)
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(color: Colors.blue),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final index = ref.watch(indexProvider);
+                        return RichText(
+                          text: TextSpan(
+                            text: "DEFINITIONS ",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                text: data.meanings![index].definitions!.length
+                                    .toString(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                        color: Colors.grey,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final index = ref.watch(indexProvider);
+                        return Text(
+                          data.meanings![index].definitions![0].definition
+                              .toString(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                  fontSize: 16, fontWeight: FontWeight.w400),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Consumer(builder: (context, ref, child) {
+                          final index = ref.watch(indexProvider);
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  text: "SYNONYMS ",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                  children: [
+                                    TextSpan(
+                                      text: data
+                                          .meanings![index].synonyms!.length
+                                          .toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(
+                                              color: Colors.grey,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: data.meanings![index].synonyms!
+                                    .take(4)
+                                    .map((e) => Text(
+                                          e,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                color: Colors.blue,
+                                              ),
+                                        ))
+                                    .toList(),
+                              )
+                            ],
+                          );
+                        }),
+                        Consumer(builder: (context, ref, child) {
+                          final index = ref.watch(indexProvider);
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  text: "ANTONYMS ",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                  children: [
+                                    TextSpan(
+                                      text: data
+                                          .meanings![index].antonyms!.length
+                                          .toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(
+                                              color: Colors.grey,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: data.meanings![index].antonyms!
+                                    .take(4)
+                                    .map((e) => Text(
+                                          e,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                color: Colors.blue,
+                                              ),
+                                        ))
+                                    .toList(),
+                              )
+                            ],
+                          );
+                        }),
                       ],
                     )
                   ],
