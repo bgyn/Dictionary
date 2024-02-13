@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:dictionary/feature/search/controller/search_controller.dart';
+import 'package:dictionary/model/dictionary_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -61,9 +62,15 @@ class SearchPage extends ConsumerWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            playAudioFromUrl(
-                              data.phonetics![0].audio.toString(),
-                            );
+                            if (data.phonetics![0].audio == "") {
+                              playAudioFromUrl(
+                                data.phonetics![1].audio.toString(),
+                              );
+                            } else {
+                              playAudioFromUrl(
+                                data.phonetics![0].audio.toString(),
+                              );
+                            }
                           },
                           icon: const Icon(
                             Icons.speaker_rounded,
