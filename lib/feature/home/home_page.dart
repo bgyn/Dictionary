@@ -1,3 +1,4 @@
+import 'package:dictionary/feature/recent/recent_controller.dart';
 import 'package:dictionary/feature/search/screen/search_page.dart';
 import 'package:dictionary/theme/theme_controller.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +68,7 @@ class HomePage extends ConsumerWidget {
                         query: value.toString(),
                       ),
                     ));
+                ref.read(recentControllerProvider.notifier).updateRecent(value);
                 clearText();
               },
             ),
@@ -77,6 +79,17 @@ class HomePage extends ConsumerWidget {
               "Recent",
               style: Theme.of(context).textTheme.titleLarge,
             ),
+            Consumer(builder: (context, ref, child) {
+              final list = ref.watch(recentControllerProvider);
+              return Column(
+                children: list
+                    .map((e) => Text(
+                          "${e[0].toUpperCase()}${e.substring(1)}",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ))
+                    .toList(),
+              );
+            }),
           ],
         ),
       ),

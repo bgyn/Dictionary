@@ -10,8 +10,16 @@ class SearchRepository {
 
   static const url = ApiConstant.BASE_URL;
 
-  Future<DictionaryModel> getResponse({required String word}) async {
-    final response = await Dio().get(url + word);
-    return DictionaryModel.fromJson(response.data[0]);
+  Future<DictionaryModel> fetchData({required String word}) async {
+    try {
+      final response = await Dio().get(url + word);
+      if (response.statusCode == 200) {
+        return DictionaryModel.fromJson(response.data[0]);
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch data. Please try again later.');
+    }
   }
 }
