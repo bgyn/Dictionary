@@ -75,17 +75,39 @@ class HomePage extends ConsumerWidget {
             const SizedBox(
               height: 30,
             ),
-            Text(
-              "Recent",
-              style: Theme.of(context).textTheme.titleLarge,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Recent",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                IconButton(
+                    onPressed: () {
+                      ref.read(recentControllerProvider.notifier).clearRecent();
+                    },
+                    icon: const Icon(Icons.delete))
+              ],
             ),
             Consumer(builder: (context, ref, child) {
               final list = ref.watch(recentControllerProvider);
               return Column(
                 children: list
-                    .map((e) => Text(
-                          "${e[0].toUpperCase()}${e.substring(1)}",
-                          style: Theme.of(context).textTheme.titleMedium,
+                    .map((e) => InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SearchPage(query: e),
+                                ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2),
+                            child: Text(
+                              "${e[0].toUpperCase()}${e.substring(1)}",
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
                         ))
                     .toList(),
               );

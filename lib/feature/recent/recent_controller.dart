@@ -32,4 +32,11 @@ class RecentController extends StateNotifier<List<String>> {
     final encodedDate = jsonEncode(data);
     SharedUtility().setrecents(encodedDate);
   }
+
+  void clearRecent() {
+    state = [];
+    final data = {'wordList': []};
+    final encodedDate = jsonEncode(data);
+    SharedUtility().setrecents(encodedDate);
+  }
 }

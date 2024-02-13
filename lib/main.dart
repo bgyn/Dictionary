@@ -1,5 +1,5 @@
 import 'package:dictionary/core/utility/shred_utility.dart';
-import 'package:dictionary/feature/home/home_page.dart';
+import 'package:dictionary/feature/home/screen/home_page.dart';
 import 'package:dictionary/theme/theme.dart';
 import 'package:dictionary/theme/theme_controller.dart';
 import 'package:flutter/material.dart';
