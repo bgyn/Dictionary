@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:dictionary/feature/search/controller/search_controller.dart';
-import 'package:dictionary/model/dictionary_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -85,43 +84,47 @@ class SearchPage extends ConsumerWidget {
                     Consumer(
                       builder: (context, ref, child) {
                         final currentIndex = ref.watch(indexProvider);
-                        return Row(
-                          children: data.meanings!.asMap().entries.map((entry) {
-                            int index = entry.key;
-                            var meaning = entry.value;
-                            return InkWell(
-                              onTap: () {
-                                ref
-                                    .watch(indexProvider.notifier)
-                                    .update((state) => index);
-                              },
-                              child: Container(
-                                width: 80,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  color: currentIndex == index
-                                      ? Colors.blue
-                                      : null,
-                                  border:
-                                      Border.all(width: 1, color: Colors.blue),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    meaning.partOfSpeech.toString(),
-                                    style: currentIndex == index
-                                        ? Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(color: Colors.white)
-                                        : Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(color: Colors.blue),
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children:
+                                data.meanings!.asMap().entries.map((entry) {
+                              int index = entry.key;
+                              var meaning = entry.value;
+                              return InkWell(
+                                onTap: () {
+                                  ref
+                                      .watch(indexProvider.notifier)
+                                      .update((state) => index);
+                                },
+                                child: Container(
+                                  width: 80,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    color: currentIndex == index
+                                        ? Colors.blue
+                                        : null,
+                                    border: Border.all(
+                                        width: 1, color: Colors.blue),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      meaning.partOfSpeech.toString(),
+                                      style: currentIndex == index
+                                          ? Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(color: Colors.white)
+                                          : Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(color: Colors.blue),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }).toList(),
+                              );
+                            }).toList(),
+                          ),
                         );
                       },
                     ),
