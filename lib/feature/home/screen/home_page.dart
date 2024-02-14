@@ -33,86 +33,92 @@ class HomePage extends ConsumerWidget {
           left: 20,
           right: 20,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Dictionary',
-              style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                    fontSize: 40,
-                  ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextField(
-              controller: searchController,
-              decoration: const InputDecoration(
-                hintText: "search here",
-                filled: true,
-                fillColor: Color.fromARGB(255, 212, 212, 212),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Colors.grey,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  borderSide: BorderSide.none,
-                ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Dictionary',
+                style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                      fontSize: 40,
+                    ),
               ),
-              onSubmitted: (value) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SearchPage(
-                        query: value.toString(),
-                      ),
-                    ));
-                ref.read(recentControllerProvider.notifier).updateRecent(value);
-                clearText();
-              },
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Recent",
-                  style: Theme.of(context).textTheme.titleLarge,
+              const SizedBox(
+                height: 20,
+              ),
+              TextField(
+                controller: searchController,
+                decoration: const InputDecoration(
+                  hintText: "search here",
+                  filled: true,
+                  fillColor: Color.fromARGB(255, 212, 212, 212),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
-                IconButton(
-                    onPressed: () {
-                      ref.read(recentControllerProvider.notifier).clearRecent();
-                    },
-                    icon: const Icon(Icons.delete))
-              ],
-            ),
-            Consumer(builder: (context, ref, child) {
-              final list = ref.watch(recentControllerProvider);
-              return Column(
-                children: list
-                    .map((e) => InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SearchPage(query: e),
-                                ));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 2),
-                            child: Text(
-                              "${e[0].toUpperCase()}${e.substring(1)}",
-                              style: Theme.of(context).textTheme.titleMedium,
+                onSubmitted: (value) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SearchPage(
+                          query: value.toString(),
+                        ),
+                      ));
+                  ref
+                      .read(recentControllerProvider.notifier)
+                      .updateRecent(value);
+                  clearText();
+                },
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Recent",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        ref
+                            .read(recentControllerProvider.notifier)
+                            .clearRecent();
+                      },
+                      icon: const Icon(Icons.delete))
+                ],
+              ),
+              Consumer(builder: (context, ref, child) {
+                final list = ref.watch(recentControllerProvider);
+                return Column(
+                  children: list
+                      .map((e) => InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SearchPage(query: e),
+                                  ));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: Text(
+                                "${e[0].toUpperCase()}${e.substring(1)}",
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
                             ),
-                          ),
-                        ))
-                    .toList(),
-              );
-            }),
-          ],
+                          ))
+                      .toList(),
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );
