@@ -1,8 +1,8 @@
 import 'package:dictionary/feature/recent/recent_controller.dart';
-import 'package:dictionary/feature/search/screen/search_page.dart';
 import 'package:dictionary/theme/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends ConsumerWidget {
   final searchController = TextEditingController();
@@ -62,13 +62,10 @@ class HomePage extends ConsumerWidget {
                   ),
                 ),
                 onSubmitted: (value) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SearchPage(
-                          query: value.toString(),
-                        ),
-                      ));
+                  GoRouter.of(context).pushNamed(
+                    'search',
+                    pathParameters: {'query': value},
+                  );
                   ref
                       .read(recentControllerProvider.notifier)
                       .updateRecent(value);
@@ -100,11 +97,8 @@ class HomePage extends ConsumerWidget {
                   children: list
                       .map((e) => InkWell(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SearchPage(query: e),
-                                  ));
+                              GoRouter.of(context).pushNamed('search',
+                                  pathParameters: {'query': e});
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 2),

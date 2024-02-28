@@ -1,5 +1,5 @@
 import 'package:dictionary/core/utility/shred_utility.dart';
-import 'package:dictionary/feature/home/screen/home_page.dart';
+import 'package:dictionary/routes.dart';
 import 'package:dictionary/theme/theme.dart';
 import 'package:dictionary/theme/theme_controller.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +18,13 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Dictionary',
       theme: getAppTheme(context, ref.watch(themeControllerProvider)),
-      home: HomePage(),
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
+      routerDelegate: router.routerDelegate,
     );
   }
 }
