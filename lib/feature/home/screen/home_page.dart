@@ -62,14 +62,18 @@ class HomePage extends ConsumerWidget {
                   ),
                 ),
                 onSubmitted: (value) {
-                  GoRouter.of(context).pushNamed(
-                    'search',
-                    pathParameters: {'query': value},
-                  );
-                  ref
-                      .read(recentControllerProvider.notifier)
-                      .updateRecent(value);
-                  clearText();
+                  if (value.isEmpty) {
+                    null;
+                  } else {
+                    GoRouter.of(context).pushNamed(
+                      'search',
+                      pathParameters: {'query': value},
+                    );
+                    ref
+                        .read(recentControllerProvider.notifier)
+                        .updateRecent(value);
+                    clearText();
+                  }
                 },
               ),
               const SizedBox(
